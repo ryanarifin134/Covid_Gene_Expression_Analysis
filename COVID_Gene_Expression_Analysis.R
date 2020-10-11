@@ -12,15 +12,16 @@ covid_icu_patients <- c('C8', 'C9', 'C10', 'C12', 'C14', 'C15', 'C20', 'C21', 'C
 all_patients = c(as.character(covid_icu_patients), as.character(non_covid_patients))
 
 expression_data = fread(file_path, sep='\t', header = TRUE, data.table = FALSE, select = all_patients)
-# TODO: Round data to integer?
 expression_data <- mutate_all(expression_data, function(x) as.integer(as.character(x)))
 row.names(expression_data) <- genes
+
+# Vector of column names for the data frame
 condition <- c('Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid',
                'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid',
                'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid' ,
                'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid' ,
                'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid', 'Covid' ,
-               'Control', 'Control', 'Control', 'Control', 'Control', 'Control', 'Control', 'Control', 'Control')  #vector of column names for the data frame
+               'Control', 'Control', 'Control', 'Control', 'Control', 'Control', 'Control', 'Control', 'Control')
 colData <- data.frame(row.names=all_patients, condition=factor(condition, levels=c('Control','Covid')))
 
 dataset <- DESeqDataSetFromMatrix(countData = expression_data,
